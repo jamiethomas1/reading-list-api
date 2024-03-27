@@ -29,17 +29,17 @@ class BookController extends Controller
     public function newBook(Request $req): void
     {
         $this->validate($req, [
-            'title' => 'required|string',
-            'authors_array' => 'array',
+            'title' => 'required|string|max:256',
+            'authors_array' => 'array|max:10',
             'published' => 'date',
-            'genres_array' => 'array',
-            'length_pages' => 'required|integer',
-            'complete' => 'boolean|nullable',
-            'current_page' => 'integer',
-            'current_chapter' => 'string',
+            'genres_array' => 'array|max:10',
+            'length_pages' => 'required|integer|gte:0|lte:65535',
+            'complete' => 'boolean',
+            'current_page' => 'integer|gte:0|lte:65535',
+            'current_chapter' => 'string|max:256',
             'started_reading' => 'date',
             'finished_reading' => 'date',
-            'cover_image_url' => 'url',
+            'cover_image_url' => 'url|max:1024',
         ]);
 
         if ($req->complete && !$req->finished_reading) {
@@ -56,17 +56,17 @@ class BookController extends Controller
     public function editBook(Request $req, string $id): void
     {
         $this->validate($req, [
-            'title' => 'string',
-            'authors_array' => 'array',
-            'published' => 'date',
-            'genres_array' => 'array',
-            'length_pages' => 'integer',
+            'title' => 'string|max:256',
+            'authors_array' => 'array|max:10|nullable',
+            'published' => 'date|nullable',
+            'genres_array' => 'array|max:10|nullable',
+            'length_pages' => 'integer|gte:0|lte:65535',
             'complete' => 'boolean',
-            'current_page' => 'integer',
-            'current_chapter' => 'string',
-            'started_reading' => 'date',
-            'finished_reading' => 'date',
-            'cover_image_url' => 'url',
+            'current_page' => 'integer|gte:0|lte:65535|nullable',
+            'current_chapter' => 'string|max:256|nullable',
+            'started_reading' => 'date|nullable',
+            'finished_reading' => 'date|nullable',
+            'cover_image_url' => 'url|max:1024|nullable',
         ]);
 
         $book = Book::findOrFail($id);
