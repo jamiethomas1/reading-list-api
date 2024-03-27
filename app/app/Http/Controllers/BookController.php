@@ -47,6 +47,14 @@ class BookController extends Controller
             $req["finished_reading"] = date('Y-m-d');
         }
 
+        if ($req->authors_array) {
+            $req["authors_array"] = json_encode($req->authors_array);
+        }
+
+        if ($req->genres_array) {
+            $req["genres_array"] = json_encode($req->genres_array);
+        }
+
         $book = Book::create($req->all());
 
         return response()->json([
@@ -78,6 +86,14 @@ class BookController extends Controller
         if ($req->complete && !$req->finished_reading) {
             // Set the finished_reading date to current timestamp
             $req["finished_reading"] = date('Y-m-d');
+        }
+
+        if ($req->authors_array) {
+            $req["authors_array"] = json_encode($req->authors_array);
+        }
+
+        if ($req->genres_array) {
+            $req["genres_array"] = json_encode($req->genres_array);
         }
 
         $book->update($req->all());
