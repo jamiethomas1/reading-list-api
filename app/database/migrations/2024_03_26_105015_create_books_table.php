@@ -19,9 +19,9 @@ return new class extends Migration
             $table->json("authors_array")->default(new Expression('(JSON_ARRAY())'));
             $table->date("published")->nullable(); // Check in API logic if null, return empty date string
             $table->json("genres_array")->default(new Expression('(JSON_ARRAY())'));
-            $table->smallInteger("length_pages"); // Throw error in API response if null
+            $table->unsignedSmallInteger("length_pages"); // Throw error in API response if null
             $table->boolean("complete")->nullable()->default(false); // When set to true, also set finished_reading to current timestamp
-            $table->smallInteger("current_page")->nullable()->default(0);
+            $table->unsignedSmallInteger("current_page")->nullable()->default(0);
             $table->string("current_chapter")->nullable()->default("");
             $table->date("started_reading")->nullable(); // Check in API logic if null, return empty date string
             $table->date("finished_reading")->nullable(); // Check in API logic if null, return empty date string
