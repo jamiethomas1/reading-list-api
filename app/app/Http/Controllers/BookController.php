@@ -12,7 +12,7 @@ class BookController extends Controller
     /*
     * Get book of {id} or all books
     */
-    public function getBooks(string $id = null): string
+    public function getBooks(string $id = null): string|false
     {
         if ($id) {
             $book = Book::findOrFail($id);
@@ -26,7 +26,7 @@ class BookController extends Controller
     /*
     * Add new book to table
     */
-    public function newBook(Request $req): void
+    public function newBook(Request $req): string|false
     {
         $this->validate($req, [
             'title' => 'required|string|max:256',
@@ -47,13 +47,17 @@ class BookController extends Controller
             $req["finished_reading"] = date('Y-m-d');
         }
 
-        Book::create($req->all());
+        $book = Book::create($req->all());
+
+        return response()->json([
+            "created" => $book
+        ])->getContent();
     }
 
     /*
     * Edit an existing book entry
     */
-    public function editBook(Request $req, string $id): void
+    public function editBook(Request $req, string $id): string|false
     {
         $this->validate($req, [
             'title' => 'string|max:256',
@@ -78,15 +82,23 @@ class BookController extends Controller
 
         $book->update($req->all());
         $book->save();
+
+        return response()->json([
+            "updated" => $book
+        ])->getContent();
     }
 
     /*
     * Delete a book entry
     */
-    public function deleteBook(string $id): void
+    public function deleteBook(string $id): string|false
     {
         $book = Book::findOrFail($id);
         $book->delete();
+
+        return response()->json([
+            "deleted" => $book
+        ])->getContent();
     }
 
 }
